@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+        <title>My Portfolio</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Lora:wght@400;600&display=swap">
+        <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    
+<main id="feed">
+<div class="cycle">
+
+<section class="hero">
+  <span class="px spark" data-speed="0.25" style="left:3%;top:8%">✦</span>
+  <span class="px spark" data-speed="-0.2" style="left:40%;top:6%">✧</span>
+  <div class="stamp">
+  <div class="paper">
+    <div class="photo">
+      <img src="winter.jpg" alt="Your name">
+    </div>
+  </div>
+</div>
+  <div>
+    <h1 class="script">Hello there!</h1>
+    <p>I'm <b>Your Name</b>, a student who's passionate about building things for the web. I'm actively developing my skills in front-end development, UI design, and writing.</p>
+    <p>For me, creativity is a way to convey ideas more vividly, from wireframes to working pages that people enjoy using.</p>
+    <p><b>Education</b><br>Since 20XX · Your Course · Your University</p>
+  </div>
+  <div class="contact"><span>📞 +00 000 000 0000</span><span>✉️ you@email.com</span><span>📷 @yourhandle</span></div>
+</section>
+
+<div class="tiles"></div>
+
+<section class="skills">
+  <div class="stripes px" data-speed="0.15"></div>
+  <div class="envelope">
+    <div class="letter">
+      <span class="chip" style="background:#2f6fb5;--r:-3deg">Team Work</span>
+      <span class="chip" style="background:#5a8f3c;--r:2deg">Time Management</span>
+      <span class="chip" style="background:#c0408c;--r:-2deg">UI Design</span>
+      <span class="chip" style="background:#3a5fa5;--r:3deg">HTML / CSS</span>
+      <span class="chip" style="background:#d6402e;--r:-4deg">JavaScript</span>
+      <span class="chip" style="background:#2e8b57;--r:2deg">Research</span>
+      <span class="chip" style="background:#7a4cc2;--r:-2deg">Git</span>
+      <span class="chip" style="background:#e29a1b;--r:3deg">Adaptable</span>
+    </div>
+  </div>
+  <span class="px flower" data-speed="-0.3">🌸</span>
+  <h2 class="script px" data-speed="-0.12">Software <small>and</small> Skill</h2>
+</section>
+
+<section class="exp">
+  <h2 class="script">Experiences</h2>
+  <div class="book">
+    <div>
+      <div class="note"><b>Project / Org Name — Role</b>Describe what you did and what you achieved in one or two lines.</div>
+      <div class="note"><b>Capstone Project — Developer</b>Short description of the system you built with your team.</div>
+      <div class="note"><b>Freelance — Designer</b>Describe the clients, tools, and results.</div>
+    </div>
+    <div class="pub" style="position:relative">
+      <span class="px tape" data-speed="0.2"></span>
+      <div class="note"><b>Journal</b>Title of your paper or article, and where it was published.</div>
+      <div class="note"><b>Articles</b>Title of an article you wrote and a one-line summary.</div>
+      <h2 class="script">Publications</h2>
+    </div>
+  </div>
+</section>
+
+</div>
+</main>
+<div id="sentinel">loading more…</div>
+
+<script>
+(function(){
+  var feed=document.getElementById("feed");
+  var template=feed.querySelector(".cycle").cloneNode(true); // pristine copy for infinite loop
+  var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var ticking=false;
+
+  function parallax(){
+    ticking=false;
+    if(reduce) return;
+    var vh=innerHeight;
+    document.querySelectorAll(".px[data-speed]").forEach(function(el){
+      var sec=el.closest("section")||el.parentElement;
+      var r=sec.getBoundingClientRect();
+      if(r.bottom<-200||r.top>vh+200) return;           // skip off-screen sections
+      var d=(r.top+r.height/2-vh/2)*parseFloat(el.dataset.speed);
+      el.style.translate="0 "+(-d).toFixed(1)+"px";
+    });
+  }
+  function onScroll(){ if(!ticking){ticking=true;requestAnimationFrame(parallax);} }
+  addEventListener("scroll",onScroll,{passive:true});
+  addEventListener("resize",onScroll);
+
+  // infinite scroll: append another copy of the page when the sentinel appears
+  var io=new IntersectionObserver(function(entries){
+    if(!entries[0].isIntersecting) return;
+    feed.appendChild(template.cloneNode(true));
+    onScroll();
+  },{rootMargin:"600px"});
+  io.observe(document.getElementById("sentinel"));
+  parallax();
+})();
+</script>
+</body>
+</html>
